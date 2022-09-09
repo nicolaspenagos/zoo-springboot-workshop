@@ -31,7 +31,7 @@ public class Animal {
 
     @Override
     public String toString() {
-        return "{\n id:"+id+"\n name:"+name+"\n sex:"+sex+"\n  weight:"+weight+" \n age:"+age+"\n height:"+height+"\n arrivalDate:"+arrivalDate+"\n mother:"+mother+"\n father:"+father+" \n}";
+        return "{\n id:"+id+"\n name:"+name+"\n sex:"+sex+"\n weight:"+weight+" \n age:"+age+"\n height:"+height+"\n arrivalDate:"+arrivalDate+"\n mother:"+mother+"\n father:"+father+" \n}";
     }
 
 }
