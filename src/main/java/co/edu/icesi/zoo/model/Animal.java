@@ -21,12 +21,17 @@ public class Animal {
     @Id
     private String id;
     private String name;
-    private char sex;
+    private String sex;
     private int weight;
     private String age;
     private int height;
     private String arrivalDate;
     private String mother;
     private String father;
+
+    @Override
+    public String toString() {
+        return "{\n id:"+id+"\n name:"+name+"\n sex:"+sex+"\n  weight:"+weight+" \n age:"+age+"\n height:"+height+"\n arrivalDate:"+arrivalDate+"\n mother:"+mother+"\n father:"+father+" \n}";
+    }
 
 }

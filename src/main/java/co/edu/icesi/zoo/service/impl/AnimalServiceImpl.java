@@ -15,6 +15,7 @@ public class AnimalServiceImpl implements AnimalService {
 
     @Override
     public Animal createAnimal(Animal animalDTO) {
+        System.out.println("Hello");
         return animalRepository.save(animalDTO);
     }
 }
