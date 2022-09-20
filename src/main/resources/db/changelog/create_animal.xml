@@ -7,7 +7,7 @@
     <changeSet id="33d4e9bc-7210-47c3-9617-c56ab7c0750p" author="nicolas.penagos" failOnError="true">
 
         <createTable tableName="animal">
-            <column name="id" type="varchar(255)">
+            <column name="id" type="UUID">
                 <constraints nullable="false" primaryKey="true" />
             </column>
             <column name="name" type="varchar(255)" />
@@ -15,9 +15,9 @@
             <column name="weight" type="int" />
             <column name="height" type="int" />
             <column name="age" type="int" />
-            <column name="arrival_date" type="varchar(255)" />
-            <column name="mother" type="varchar(255)" />
-            <column name="father" type="varchar(255)" />
+            <column name="arrival_date" type="date" />
+            <column name="mother" type="UUID" />
+            <column name="father" type="UUID" />
         </createTable>
     </changeSet>
 </databaseChangeLog>

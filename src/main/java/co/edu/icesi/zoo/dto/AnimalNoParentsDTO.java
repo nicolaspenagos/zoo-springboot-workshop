@@ -1,12 +1,16 @@
 package co.edu.icesi.zoo.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AnimalNoParentsDTO {
 
     private String id;
@@ -15,7 +19,7 @@ public class AnimalNoParentsDTO {
     private int weight;
     private int age;
     private int height;
-    private String arrivalDate;
+    private LocalDateTime arrivalDate;
 
 
 }

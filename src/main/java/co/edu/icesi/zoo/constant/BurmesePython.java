@@ -1,0 +1,9 @@
+package co.edu.icesi.zoo.constant;
+
+public class BurmesePython {
+
+    public final static int MAX_HEIGHT = 7; //Maximum length in meters
+    public final static int MAX_AGE = 30; //Maximum age in years
+    public final static int MAX_WEIGHT = 180; //Maximum weight in kg
+
+}
