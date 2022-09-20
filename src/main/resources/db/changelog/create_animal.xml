@@ -14,7 +14,7 @@
             <column name="sex" type="char" />
             <column name="weight" type="int" />
             <column name="height" type="int" />
-            <column name="age" type="varchar(255)" />
+            <column name="age" type="int" />
             <column name="arrival_date" type="varchar(255)" />
             <column name="mother" type="varchar(255)" />
             <column name="father" type="varchar(255)" />

@@ -21,9 +21,9 @@ public class Animal {
     @Id
     private String id;
     private String name;
-    private String sex;
+    private char sex;
     private int weight;
-    private String age;
+    private int age;
     private int height;
     private String arrivalDate;
     private String mother;

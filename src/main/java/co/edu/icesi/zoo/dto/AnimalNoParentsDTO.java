@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AnimalDTO {
+public class AnimalNoParentsDTO {
 
     private String id;
     private String name;
@@ -16,8 +16,6 @@ public class AnimalDTO {
     private int age;
     private int height;
     private String arrivalDate;
-    private String mother;
-    private String father;
 
 
 }

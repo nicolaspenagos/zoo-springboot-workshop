@@ -19,13 +19,18 @@ public class AnimalServiceImpl implements AnimalService {
 
     @Override
     public Animal createAnimal(Animal animalDTO) {
-        System.out.println(animalDTO.toString());
+
         return animalRepository.save(animalDTO);
     }
 
     @Override
     public List<Animal> getAnimals(){
         return   StreamSupport.stream(animalRepository.findAll().spliterator(),false).collect(Collectors.toList());
+    }
+
+    @Override
+    public Animal getAnimal(String animalId) {
+        return animalRepository.findById(animalId).orElse(null);
     }
 }
 
