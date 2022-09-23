@@ -13,7 +13,7 @@
             <column name="name" type="varchar(255)" />
             <column name="sex" type="char" />
             <column name="weight" type="int" />
-            <column name="height" type="int" />
+            <column name="height" type="double" />
             <column name="age" type="int" />
             <column name="arrival_date" type="date" />
             <column name="mother" type="UUID" />
