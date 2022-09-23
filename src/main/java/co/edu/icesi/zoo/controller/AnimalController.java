@@ -72,7 +72,7 @@ public class AnimalController implements AnimalZooAPI {
 
     }
 
-    private void validatePythonCharacteristics(int age, int height, int weight){
+    private void validatePythonCharacteristics(int age, double height, int weight){
 
         if(!(age>=0&&age<= BurmesePython.MAX_AGE&&height>0&&height<=BurmesePython.MAX_HEIGHT&&weight>0&&weight<=BurmesePython.MAX_WEIGHT))
             AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST,AnimalErrorCode.CODE_03, AnimalErrorMsgs.WRONG_PYTHON_CHARACTERISTICS_MSG);

@@ -27,7 +27,7 @@ public class Animal {
     private char sex;
     private int weight;
     private int age;
-    private int height;
+    private double height;
     private LocalDateTime arrivalDate;
     private UUID mother;
     private UUID father;
