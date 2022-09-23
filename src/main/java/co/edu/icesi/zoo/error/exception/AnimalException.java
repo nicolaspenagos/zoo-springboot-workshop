@@ -10,4 +10,5 @@ public class AnimalException extends RuntimeException{
 
     private HttpStatus httpStatus;
     private AnimalError error;
+
 }

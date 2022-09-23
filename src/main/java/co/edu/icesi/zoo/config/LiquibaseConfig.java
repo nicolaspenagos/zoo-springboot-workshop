@@ -18,5 +18,4 @@ public class LiquibaseConfig {
         return liquibase;
     }
 
-
 }
