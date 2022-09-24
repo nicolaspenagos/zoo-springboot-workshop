@@ -29,8 +29,8 @@ public class Animal {
     private int age;
     private double height;
     private LocalDateTime arrivalDate;
-    private UUID mother;
-    private UUID father;
+    private UUID motherId;
+    private UUID fatherId;
 
     @PrePersist
     public void generateId(){
@@ -39,7 +39,7 @@ public class Animal {
 
     @Override
     public String toString() {
-        return "{\n id:"+id+"\n name:"+name+"\n sex:"+sex+"\n weight:"+weight+" \n age:"+age+"\n height:"+height+"\n arrivalDate:"+arrivalDate+"\n motherId:"+mother+"\n father:"+father+" \n}";
+        return "{\n id:"+id+"\n name:"+name+"\n sex:"+sex+"\n weight:"+weight+" \n age:"+age+"\n height:"+height+"\n arrivalDate:"+arrivalDate+"\n motherId:"+motherId+"\n father:"+fatherId+" \n}";
     }
 
 }

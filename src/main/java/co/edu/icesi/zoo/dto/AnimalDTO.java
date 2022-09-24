@@ -18,8 +18,8 @@ public class AnimalDTO {
     private int age;
     private double height;
     private String arrivalDate;
-    private String mother;
-    private String father;
+    private String motherId;
+    private String fatherId;
 
 
 }

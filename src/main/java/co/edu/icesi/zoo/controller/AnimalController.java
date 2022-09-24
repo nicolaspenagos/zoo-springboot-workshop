@@ -34,7 +34,7 @@ public class AnimalController implements AnimalZooAPI {
         validateAnimalName(animalDTO.getName());
         validateDate(animalDTO.getArrivalDate());
         validatePythonCharacteristics(animalDTO.getAge(), animalDTO.getHeight(), animalDTO.getWeight());
-        validateParseablesIDs(animalDTO.getMother(), animalDTO.getFather());
+        validateParseablesIDs(animalDTO.getMotherId(), animalDTO.getFatherId());
         return animalMapper.fromAnimal(animalService.createAnimal(animalMapper.fromDTO(animalDTO)));
 
     }

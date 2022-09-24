@@ -33,7 +33,7 @@ public class AnimalServiceImpl implements AnimalService {
     public Animal createAnimal(Animal animalDTO) {
 
         validateUniqueName(animalDTO.getName());
-        validateParentsSex(animalDTO.getMother(), animalDTO.getFather());
+        validateParentsSex(animalDTO.getMotherId(), animalDTO.getFatherId());
         return animalRepository.save(animalDTO);
 
     }
@@ -51,8 +51,8 @@ public class AnimalServiceImpl implements AnimalService {
         if(optionalAnimal.isEmpty())
             return null;
 
-        Animal mother = Optional.ofNullable(optionalAnimal.get().getMother()).map(this::getAnimal).orElse(null);
-        Animal father = Optional.ofNullable(optionalAnimal.get().getFather()).map(this::getAnimal).orElse(null);
+        Animal mother = Optional.ofNullable(optionalAnimal.get().getMotherId()).map(this::getAnimal).orElse(null);
+        Animal father = Optional.ofNullable(optionalAnimal.get().getFatherId()).map(this::getAnimal).orElse(null);
 
         return animalMapper.fromAnimalToWithParents(optionalAnimal.get(), mother, father);
 
