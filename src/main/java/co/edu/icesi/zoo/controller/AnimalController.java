@@ -4,6 +4,7 @@ import co.edu.icesi.zoo.api.AnimalZooAPI;
 import co.edu.icesi.zoo.constant.AnimalErrorCode;
 import co.edu.icesi.zoo.constant.AnimalErrorMsgs;
 import co.edu.icesi.zoo.constant.BurmesePython;
+import co.edu.icesi.zoo.constant.UtilConstant;
 import co.edu.icesi.zoo.dto.AnimalDTO;
 import co.edu.icesi.zoo.dto.AnimalNoParentsDTO;
 import co.edu.icesi.zoo.dto.AnimalWithParentsDTO;
@@ -17,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -31,10 +30,14 @@ public class AnimalController implements AnimalZooAPI {
     @Override
     public AnimalDTO createAnimal(AnimalDTO animalDTO) {
 
-        validateAnimalName(animalDTO.getName());
+        validateAnimalName(animalDTO.getName(), BurmesePython.MAX_LENGHT_NAME, BurmesePython.REGEX_FOR_NAME);
         validateDate(animalDTO.getArrivalDate());
-        validatePythonCharacteristics(animalDTO.getAge(), animalDTO.getHeight(), animalDTO.getWeight());
-        validateParseablesIDs(animalDTO.getMotherId(), animalDTO.getFatherId());
+        validatePythonCharacteristic(animalDTO.getAge(), 0, BurmesePython.MAX_AGE);
+        validatePythonCharacteristic(animalDTO.getHeight(), 0, BurmesePython.MAX_HEIGHT);
+        validatePythonCharacteristic(animalDTO.getWeight(), 0, BurmesePython.MAX_WEIGHT);
+        validateParseableID(animalDTO.getMotherId());
+        validateParseableID(animalDTO.getFatherId());
+
         return animalMapper.fromAnimal(animalService.createAnimal(animalMapper.fromDTO(animalDTO)));
 
     }
@@ -52,9 +55,9 @@ public class AnimalController implements AnimalZooAPI {
     /*
      * CONTROLLER VALIDATIONS
      */
-    private void validateAnimalName(String name){
+    private void validateAnimalName(String name, int maxLength, String regex){
 
-        if(name.length()>120||!name.matches("[a-zA-Z ]+"))
+        if(name.length()>maxLength||!name.matches(regex))
             AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, AnimalErrorCode.CODE_01, AnimalErrorMsgs.WRONG_NAME_FORMAT_MSG);
 
     }
@@ -72,25 +75,27 @@ public class AnimalController implements AnimalZooAPI {
 
     }
 
-    private void validatePythonCharacteristics(int age, double height, int weight){
+    private void validatePythonCharacteristic(double characteristic, double min ,double max){
 
-        if(!(age>=0&&age<= BurmesePython.MAX_AGE&&height>0&&height<=BurmesePython.MAX_HEIGHT&&weight>0&&weight<=BurmesePython.MAX_WEIGHT))
+
+        if(characteristic<min||characteristic>max)
             AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST,AnimalErrorCode.CODE_03, AnimalErrorMsgs.WRONG_PYTHON_CHARACTERISTICS_MSG);
 
     }
 
-    private void validateParseablesIDs(String motherId, String fatherId){
+    private void validateParseableID(String parentId){
+
+        if(parentId!=null&&!parentId.matches(UtilConstant.UUID_REGEX))
+            AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, AnimalErrorCode.CODE_06, AnimalErrorMsgs.INVALID_ID);
+
+       /*
         try{
 
-            if(motherId!=null) UUID.fromString(motherId);
-            if(fatherId!=null) UUID.fromString(fatherId);
+            if(parentId!=null) UUID.fromString(parentId);
 
         }catch (Exception e){
-            AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, AnimalErrorCode.CODE_06, AnimalErrorMsgs.INVALID_ID);
-        }
+
+        }*/
     }
-
-
-
 
 }

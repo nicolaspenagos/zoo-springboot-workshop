@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface AnimalService {
+
     public Animal createAnimal(@RequestBody Animal animalDTO);
     public List<Animal> getAnimals();
-
     public AnimalWithParentsDTO getAnimalWithParents(@PathVariable String animalName);
 
 

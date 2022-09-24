@@ -33,7 +33,8 @@ public class AnimalServiceImpl implements AnimalService {
     public Animal createAnimal(Animal animalDTO) {
 
         validateUniqueName(animalDTO.getName());
-        validateParentsSex(animalDTO.getMotherId(), animalDTO.getFatherId());
+        validateParentSex(animalDTO.getMotherId(), BurmesePython.FEMALE);
+        validateParentSex(animalDTO.getFatherId(), BurmesePython.MALE);
         return animalRepository.save(animalDTO);
 
     }
@@ -84,19 +85,13 @@ public class AnimalServiceImpl implements AnimalService {
 
     }
 
-    private void validateParentsSex(UUID motherId, UUID fatherId){
+    private void validateParentSex(UUID parentId, char sex){
 
-        if( motherId!=null){
-            Animal mother = getAnimal(motherId);
-            if(mother!=null && mother.getSex() != BurmesePython.FEMALE){
-                AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, AnimalErrorCode.CODE_05, AnimalErrorMsgs.WRONG_MOTHER_SEX);
-            }
-        }
-
-        if(fatherId!=null){
-            Animal father = getAnimal(fatherId);
-            if(father!= null && father.getSex() != BurmesePython.MALE){
-                AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, AnimalErrorCode.CODE_05, AnimalErrorMsgs.WRONG_FATHER_SEX);
+        if( parentId!=null){
+            Optional<Animal> parent = Optional.ofNullable(getAnimal(parentId));
+            if(parent.isPresent() && parent.get().getSex() != sex){
+                String msg = (sex==BurmesePython.FEMALE)?AnimalErrorMsgs.WRONG_MOTHER_SEX:AnimalErrorMsgs.WRONG_FATHER_SEX;
+                AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, AnimalErrorCode.CODE_05, msg);
             }
         }
 
