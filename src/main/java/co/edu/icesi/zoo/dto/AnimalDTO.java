@@ -14,7 +14,7 @@ public class AnimalDTO {
     private String id;
     private String name;
     private char sex;
-    private int weight;
+    private double weight;
     private int age;
     private double height;
     private String arrivalDate;

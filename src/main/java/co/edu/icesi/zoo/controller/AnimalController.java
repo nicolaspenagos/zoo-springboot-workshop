@@ -78,7 +78,7 @@ public class AnimalController implements AnimalZooAPI {
     private void validatePythonCharacteristic(double characteristic, double min ,double max){
 
 
-        if(characteristic<min||characteristic>max)
+        if(characteristic<=min||characteristic>max)
             AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST,AnimalErrorCode.CODE_03, AnimalErrorMsgs.WRONG_PYTHON_CHARACTERISTICS_MSG);
 
     }
@@ -88,14 +88,7 @@ public class AnimalController implements AnimalZooAPI {
         if(parentId!=null&&!parentId.matches(UtilConstant.UUID_REGEX))
             AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, AnimalErrorCode.CODE_06, AnimalErrorMsgs.INVALID_ID);
 
-       /*
-        try{
 
-            if(parentId!=null) UUID.fromString(parentId);
-
-        }catch (Exception e){
-
-        }*/
     }
 
 }
