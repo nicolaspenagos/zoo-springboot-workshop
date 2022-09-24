@@ -85,7 +85,7 @@ public class AnimalController implements AnimalZooAPI {
             if(motherId!=null) UUID.fromString(motherId);
             if(fatherId!=null) UUID.fromString(fatherId);
 
-        }catch (NumberFormatException e){
+        }catch (Exception e){
             AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, AnimalErrorCode.CODE_06, AnimalErrorMsgs.INVALID_ID);
         }
     }
