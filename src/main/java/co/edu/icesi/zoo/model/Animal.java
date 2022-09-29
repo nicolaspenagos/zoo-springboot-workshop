@@ -21,7 +21,6 @@ import java.util.UUID;
 public class Animal {
 
     @Id
-    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID id;
     private String name;
     private char sex;
