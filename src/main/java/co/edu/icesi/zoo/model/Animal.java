@@ -1,6 +1,7 @@
 package co.edu.icesi.zoo.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +23,7 @@ public class Animal {
 
     @Id
     private UUID id;
+
     private String name;
     private char sex;
     private double weight;

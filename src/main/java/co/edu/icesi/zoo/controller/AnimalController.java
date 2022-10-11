@@ -30,7 +30,7 @@ public class AnimalController implements AnimalZooAPI {
     @Override
     public AnimalDTO createAnimal(AnimalDTO animalDTO) {
 
-        validateAnimalName(animalDTO.getName(), BurmesePython.MAX_LENGHT_NAME, BurmesePython.REGEX_FOR_NAME);
+        validateAnimalName(animalDTO.getName(), 1, BurmesePython.MAX_LENGHT_NAME, BurmesePython.REGEX_FOR_NAME);
         validateDate(animalDTO.getArrivalDate());
         validatePythonCharacteristic(animalDTO.getAge(), 0, BurmesePython.MAX_AGE);
         validatePythonCharacteristic(animalDTO.getHeight(), 0, BurmesePython.MAX_HEIGHT);
@@ -55,9 +55,9 @@ public class AnimalController implements AnimalZooAPI {
     /*
      * CONTROLLER VALIDATIONS
      */
-    private void validateAnimalName(String name, int maxLength, String regex){
+    private void validateAnimalName(String name,int minLength,int maxLength, String regex){
 
-        if(name.length()>maxLength||!name.matches(regex))
+        if(name.length()<minLength || name.length() > maxLength || !name.matches(regex))
             AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, AnimalErrorCode.CODE_01, AnimalErrorMsgs.WRONG_NAME_FORMAT_MSG);
 
     }
