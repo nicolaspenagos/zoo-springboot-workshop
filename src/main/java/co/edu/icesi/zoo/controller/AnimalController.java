@@ -4,7 +4,7 @@ import co.edu.icesi.zoo.api.AnimalZooAPI;
 import co.edu.icesi.zoo.constant.AnimalErrorCode;
 import co.edu.icesi.zoo.constant.AnimalErrorMsgs;
 import co.edu.icesi.zoo.constant.BurmesePython;
-import co.edu.icesi.zoo.constant.UtilConstant;
+import co.edu.icesi.zoo.constant.UtilConstants;
 import co.edu.icesi.zoo.dto.AnimalDTO;
 import co.edu.icesi.zoo.dto.AnimalNoParentsDTO;
 import co.edu.icesi.zoo.dto.AnimalWithParentsDTO;
@@ -30,7 +30,7 @@ public class AnimalController implements AnimalZooAPI {
     @Override
     public AnimalDTO createAnimal(AnimalDTO animalDTO) {
 
-        validateAnimalName(animalDTO.getName(), 1, BurmesePython.MAX_LENGHT_NAME, BurmesePython.REGEX_FOR_NAME);
+        validateAnimalName(animalDTO.getName(), 1, BurmesePython.MAX_LENGTH_NAME, BurmesePython.REGEX_FOR_NAME);
         validateDate(animalDTO.getArrivalDate());
         validatePythonCharacteristic(animalDTO.getAge(), 0, BurmesePython.MAX_AGE);
         validatePythonCharacteristic(animalDTO.getHeight(), 0, BurmesePython.MAX_HEIGHT);
@@ -85,7 +85,7 @@ public class AnimalController implements AnimalZooAPI {
 
     private void validateParseableID(String parentId){
 
-        if(parentId!=null&&!parentId.matches(UtilConstant.UUID_REGEX))
+        if(parentId!=null&&!parentId.matches(UtilConstants.UUID_REGEX))
             AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, AnimalErrorCode.CODE_06, AnimalErrorMsgs.INVALID_ID);
 
 

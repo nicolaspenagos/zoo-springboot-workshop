@@ -1,5 +1,7 @@
 package co.edu.icesi.zoo.constant;
 
-public class UtilConstant {
+public class UtilConstants {
     public final static String UUID_REGEX = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$";
+
 }
+

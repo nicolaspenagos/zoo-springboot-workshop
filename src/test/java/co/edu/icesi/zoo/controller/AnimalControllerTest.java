@@ -3,6 +3,7 @@ package co.edu.icesi.zoo.controller;
 import co.edu.icesi.zoo.constant.AnimalErrorCode;
 import co.edu.icesi.zoo.constant.AnimalErrorMsgs;
 import co.edu.icesi.zoo.constant.BurmesePython;
+import co.edu.icesi.zoo.constant.UtilConstants;
 import co.edu.icesi.zoo.dto.AnimalDTO;
 import co.edu.icesi.zoo.error.exception.AnimalException;
 import co.edu.icesi.zoo.mapper.AnimalMapper;
@@ -54,14 +55,9 @@ public class AnimalControllerTest {
         for (int nameLength : nameLengths) {
 
             setupScenary1();
-            dummyAnimal.setName(generateRandomOnlyLettersString(nameLength));
 
-            try {
-                animalController.createAnimal(dummyAnimal);
-                fail();
-            } catch (AnimalException exception) {
-                verifyAnimalException(AnimalErrorMsgs.WRONG_NAME_FORMAT_MSG, AnimalErrorCode.CODE_01, exception);
-            }
+            dummyAnimal.setName(generateRandomOnlyLettersString(nameLength));
+            verifyAnimalException(AnimalErrorMsgs.WRONG_NAME_FORMAT_MSG, AnimalErrorCode.CODE_01);
 
         }
 
@@ -76,54 +72,113 @@ public class AnimalControllerTest {
         for (String invalidName : invalidNames) {
 
             setupScenary1();
-            dummyAnimal.setName(generateRandomOnlyLettersString(20) + invalidName);
 
-            try {
-                animalController.createAnimal(dummyAnimal);
-                fail();
-            } catch (AnimalException exception) {
-                verifyAnimalException(AnimalErrorMsgs.WRONG_NAME_FORMAT_MSG, AnimalErrorCode.CODE_01, exception);
-            }
+            dummyAnimal.setName(generateRandomOnlyLettersString(20) + invalidName);
+            verifyAnimalException(AnimalErrorMsgs.WRONG_NAME_FORMAT_MSG, AnimalErrorCode.CODE_01);
 
         }
 
     }
 
     @Test
-    public void futureArrivalDateTest(){
+    public void futureArrivalDateTest() {
 
-        //Second, minute, hour, day, month and year in ms
+        //No animals can be registered after the current date
+        //------------- Second, minute, hour, day, month and year in ms to get the future time
         long[] times = {1000L, 60000L, 3600000L, 86400000L, 2628000000L, 31540000000L};
         long currentTime = System.currentTimeMillis();
         ZoneId zoneId = ZoneId.systemDefault();
 
-        for(long time : times){
+        for (long time : times) {
 
             setupScenary1();
             long futureArrivalTime = currentTime + time;
             LocalDateTime arrivalDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(futureArrivalTime), zoneId);
-            dummyAnimal.setArrivalDate(arrivalDate.toString());
 
-            try {
-                animalController.createAnimal(dummyAnimal);
-                fail();
-            } catch (AnimalException exception) {
-                verifyAnimalException(AnimalErrorMsgs.IMPOSSIBLE_DATE_MSG, AnimalErrorCode.CODE_02, exception);
-            }
+            dummyAnimal.setArrivalDate(arrivalDate.toString());
+            verifyAnimalException(AnimalErrorMsgs.IMPOSSIBLE_DATE_MSG, AnimalErrorCode.CODE_02);
+
+        }
+    }
+
+    @Test
+    public void validatePythonWrongHeightTest(){
+
+        double[] invalidHeights = {-1, -0.1, 0, 8.01, 9};
+        validatePythonCharacteristic(invalidHeights, BurmesePython.HEIGHT);
+
+    }
+
+    @Test
+    public void validatePythonWrongWeightTest(){
+
+        double[] invalidWeights = {-1, -0.1, 0, 180.01, 182};
+        validatePythonCharacteristic(invalidWeights, BurmesePython.WEIGHT);
+
+    }
+
+    @Test
+    public void validatePythonWrongAgeTest(){
+
+        double[] invalidAges = {-1, -0.1, 0, 30.01, 31};
+        validatePythonCharacteristic(invalidAges, BurmesePython.AGE);
+
+    }
+
+    @Test
+    public void validateNotParseableUUIDTest(){
+
+        String[] invalidsUUIDs = {"","1143876087", "a00347293", "5b666754-e217-4775-9c95-352ebb0673cx"};
+        for(String invalidUUID : invalidsUUIDs){
+
+            // We only need to check the parents UUIDs as these are the only ones manually set by the user
+            setupScenary1();
+            dummyAnimal.setMotherId(invalidUUID);
+            verifyAnimalException(AnimalErrorMsgs.INVALID_ID, AnimalErrorCode.CODE_06);
+            setupScenary1();
+            dummyAnimal.setFatherId(invalidUUID);
+            verifyAnimalException(AnimalErrorMsgs.INVALID_ID, AnimalErrorCode.CODE_06);
             
+
         }
     }
 
     /*
      * Utils
      */
+    public void validatePythonCharacteristic(double[] invalidCharacteristics, char characteristic) {
 
-    public void verifyAnimalException(String correctMSG, AnimalErrorCode correctCode, AnimalException exception) {
+        for (double invalidChacateristic : invalidCharacteristics) {
 
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
-        assertNotNull(exception.getError());
-        assertEquals(correctMSG, exception.getError().getMessage());
-        assertEquals(correctCode, exception.getError().getCode());
+            setupScenary1();
+
+            if (characteristic == BurmesePython.AGE) dummyAnimal.setAge(invalidChacateristic);
+            if (characteristic == BurmesePython.WEIGHT) dummyAnimal.setWeight(invalidChacateristic);
+            if (characteristic == BurmesePython.HEIGHT) dummyAnimal.setHeight(invalidChacateristic);
+
+
+            verifyAnimalException(AnimalErrorMsgs.WRONG_PYTHON_CHARACTERISTICS_MSG, AnimalErrorCode.CODE_03);
+
+
+        }
+
+    }
+
+    public void verifyAnimalException(String correctMSG, AnimalErrorCode correctCode) {
+
+        // Check if the corresponding exception is thrown when we are trying to create an animal
+        // containing an invalid attribute
+        try {
+            animalController.createAnimal(dummyAnimal);
+            fail();
+        } catch (AnimalException exception) {
+
+            assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
+            assertNotNull(exception.getError());
+            assertEquals(correctMSG, exception.getError().getMessage());
+            assertEquals(correctCode, exception.getError().getCode());
+
+        }
 
     }
 
