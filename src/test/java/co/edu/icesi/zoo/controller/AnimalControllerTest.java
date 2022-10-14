@@ -3,7 +3,6 @@ package co.edu.icesi.zoo.controller;
 import co.edu.icesi.zoo.constant.AnimalErrorCode;
 import co.edu.icesi.zoo.constant.AnimalErrorMsgs;
 import co.edu.icesi.zoo.constant.BurmesePython;
-import co.edu.icesi.zoo.constant.UtilConstants;
 import co.edu.icesi.zoo.dto.AnimalDTO;
 import co.edu.icesi.zoo.error.exception.AnimalException;
 import co.edu.icesi.zoo.mapper.AnimalMapper;
@@ -18,8 +17,9 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 public class AnimalControllerTest {
 
@@ -44,6 +44,40 @@ public class AnimalControllerTest {
         animalMapper = new AnimalMapperImpl();
         animalService = mock(AnimalService.class);
         animalController = new AnimalController(animalService, animalMapper);
+
+    }
+
+
+    @Test
+    public void createAnimalTest(){
+
+        setupScenary1();
+
+        try{
+
+            animalController.createAnimal(dummyAnimal);
+            verify(animalService, times(1)).createAnimal(any());
+
+        }catch (AnimalException exception){
+            fail();
+        }
+
+
+    }
+
+    @Test
+    public void getAnimalsTest(){
+
+        animalController.getAnimals();
+        verify(animalService, times(1)).getAnimals();
+
+    }
+
+    @Test
+    public void getAnimalWithParentsTest(){
+
+        animalController.getAnimalWithParents(any());
+        verify(animalService, times(1)).getAnimalWithParents(any());
 
     }
 
@@ -144,7 +178,7 @@ public class AnimalControllerTest {
     }
 
     /*
-     * Utils
+     * UTILS
      */
     public void validatePythonCharacteristic(double[] invalidCharacteristics, char characteristic) {
 
