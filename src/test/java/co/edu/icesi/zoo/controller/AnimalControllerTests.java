@@ -2,6 +2,7 @@ package co.edu.icesi.zoo.controller;
 
 import co.edu.icesi.zoo.constant.AnimalErrorCode;
 import co.edu.icesi.zoo.constant.AnimalErrorMsgs;
+import co.edu.icesi.zoo.constant.AnimalTestConstants;
 import co.edu.icesi.zoo.constant.BurmesePython;
 import co.edu.icesi.zoo.dto.AnimalDTO;
 import co.edu.icesi.zoo.error.exception.AnimalException;
@@ -21,22 +22,18 @@ import java.time.ZoneId;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class AnimalControllerTest {
-
-    private static final String ANIMAL_TEST_UUID = "5b666754-e217-4775-9c95-352ebb0673cb";
-    private static final String ANIMAL_TEST_NAME = "Asmodeus";
-    private static final String ANIMAL_TEST_ARRIVAL_DATE = "2020-09-24T23:37:42";
-    private AnimalDTO dummyAnimal;
+public class AnimalControllerTests {
 
     private AnimalController animalController;
     private AnimalMapper animalMapper;
     private AnimalService animalService;
 
-    public void setupScenary1() {
-        //A random python with valid average characteristics and no parents
-        dummyAnimal = new AnimalDTO(ANIMAL_TEST_UUID, ANIMAL_TEST_NAME, BurmesePython.MALE, BurmesePython.MAX_WEIGHT / 2, BurmesePython.MAX_AGE / 2, BurmesePython.MAX_HEIGHT / 2, ANIMAL_TEST_ARRIVAL_DATE, null, null);
-    }
+    private AnimalDTO dummyAnimal;
 
+    public void setupScenery1() {
+        //A random python with valid average characteristics and no parents
+        dummyAnimal = new AnimalDTO(AnimalTestConstants.ANIMAL_TEST_UUID, AnimalTestConstants.ANIMAL_TEST_NAME, BurmesePython.MALE, BurmesePython.MAX_WEIGHT / 2, BurmesePython.MAX_AGE / 2, BurmesePython.MAX_HEIGHT / 2, AnimalTestConstants.ANIMAL_TEST_ARRIVAL_DATE, null, null);
+    }
 
     @BeforeEach
     public void init() {
@@ -48,10 +45,12 @@ public class AnimalControllerTest {
     }
 
 
+
+
     @Test
     public void createAnimalTest(){
 
-        setupScenary1();
+        setupScenery1();
 
         try{
 
@@ -88,7 +87,7 @@ public class AnimalControllerTest {
 
         for (int nameLength : nameLengths) {
 
-            setupScenary1();
+            setupScenery1();
 
             dummyAnimal.setName(generateRandomOnlyLettersString(nameLength));
             verifyAnimalException(AnimalErrorMsgs.WRONG_NAME_FORMAT_MSG, AnimalErrorCode.CODE_01);
@@ -105,7 +104,7 @@ public class AnimalControllerTest {
 
         for (String invalidName : invalidNames) {
 
-            setupScenary1();
+            setupScenery1();
 
             dummyAnimal.setName(generateRandomOnlyLettersString(20) + invalidName);
             verifyAnimalException(AnimalErrorMsgs.WRONG_NAME_FORMAT_MSG, AnimalErrorCode.CODE_01);
@@ -125,7 +124,7 @@ public class AnimalControllerTest {
 
         for (long time : times) {
 
-            setupScenary1();
+            setupScenery1();
             long futureArrivalTime = currentTime + time;
             LocalDateTime arrivalDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(futureArrivalTime), zoneId);
 
@@ -166,10 +165,10 @@ public class AnimalControllerTest {
         for(String invalidUUID : invalidsUUIDs){
 
             // We only need to check the parents UUIDs as these are the only ones manually set by the user
-            setupScenary1();
+            setupScenery1();
             dummyAnimal.setMotherId(invalidUUID);
             verifyAnimalException(AnimalErrorMsgs.INVALID_ID, AnimalErrorCode.CODE_06);
-            setupScenary1();
+            setupScenery1();
             dummyAnimal.setFatherId(invalidUUID);
             verifyAnimalException(AnimalErrorMsgs.INVALID_ID, AnimalErrorCode.CODE_06);
             
@@ -177,18 +176,25 @@ public class AnimalControllerTest {
         }
     }
 
+    @Test
+    public void validateWrongDateFormat(){
+        setupScenery1();
+        dummyAnimal.setArrivalDate("inavlid_date");
+        verifyAnimalException(AnimalErrorMsgs.WRONG_DATE_FORMAT_MSG, AnimalErrorCode.CODE_02);
+    }
+
     /*
      * UTILS
      */
     public void validatePythonCharacteristic(double[] invalidCharacteristics, char characteristic) {
 
-        for (double invalidChacateristic : invalidCharacteristics) {
+        for (double invalidCharacteristic : invalidCharacteristics) {
 
-            setupScenary1();
+            setupScenery1();
 
-            if (characteristic == BurmesePython.AGE) dummyAnimal.setAge(invalidChacateristic);
-            if (characteristic == BurmesePython.WEIGHT) dummyAnimal.setWeight(invalidChacateristic);
-            if (characteristic == BurmesePython.HEIGHT) dummyAnimal.setHeight(invalidChacateristic);
+            if (characteristic == BurmesePython.AGE) dummyAnimal.setAge(invalidCharacteristic);
+            if (characteristic == BurmesePython.WEIGHT) dummyAnimal.setWeight(invalidCharacteristic);
+            if (characteristic == BurmesePython.HEIGHT) dummyAnimal.setHeight(invalidCharacteristic);
 
 
             verifyAnimalException(AnimalErrorMsgs.WRONG_PYTHON_CHARACTERISTICS_MSG, AnimalErrorCode.CODE_03);

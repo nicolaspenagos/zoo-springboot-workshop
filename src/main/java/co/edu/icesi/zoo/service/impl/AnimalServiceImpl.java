@@ -30,12 +30,12 @@ public class AnimalServiceImpl implements AnimalService {
     public final AnimalMapper animalMapper;
 
     @Override
-    public Animal createAnimal(Animal animalDTO) {
+    public Animal createAnimal(Animal animal) {
 
-        validateUniqueName(animalDTO.getName());
-        validateParentSex(animalDTO.getMotherId(), BurmesePython.FEMALE);
-        validateParentSex(animalDTO.getFatherId(), BurmesePython.MALE);
-        return animalRepository.save(animalDTO);
+        validateUniqueName(animal.getName());
+        validateParentSex(animal.getMotherId(), BurmesePython.FEMALE);
+        validateParentSex(animal.getFatherId(), BurmesePython.MALE);
+        return animalRepository.save(animal);
 
     }
 
