@@ -30,6 +30,7 @@ import java.io.Reader;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.UUID;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -59,14 +60,17 @@ public class CreateAnimalIntegrationTest {
 
     }
 
-    //Crear consultar listar
 
-
+    /*
+     * CONTROLLER RESPONSIBILITY
+     */
     @SneakyThrows
     @Test
     public void createAnimalTest(){
 
-        String body = parseResourceToString("createAnimal.json");
+        AnimalDTO animal = baseAnimal();
+        animal.setName("Joshua");
+        String body = objectMapper.writeValueAsString(animal);
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/animals")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -241,8 +245,55 @@ public class CreateAnimalIntegrationTest {
 
     }
 
+    /*
+     * SERVICE RESPONSIBILITY
+     */
+    @SneakyThrows
+    @Test
+    public void createAnimalRepeatedNameTest(){
+
+        AnimalDTO animalDTO = baseAnimal();
+        animalDTO.setName("Beelzebub");
+        String body = objectMapper.writeValueAsString(animalDTO);
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/animals")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body)).andExpect(status().isBadRequest())
+                .andReturn();
+
+        AnimalError animalError = objectMapper.readValue(result.getResponse().getContentAsString(), AnimalError.class);
+        verifyAnimalError(AnimalErrorMsgs.NOT_UNIQUE_NAME_MSG, AnimalErrorCode.CODE_04, animalError);
+
+    }
+
+    @SneakyThrows
+    @Test
+    public void wrongMotherSexTest(){
+
+        AnimalDTO animalDTO = baseAnimal();
+        animalDTO.setMotherId("6c9e1336-13b8-4ecd-aa6f-f473c3c2e018");
+
+        String body = objectMapper.writeValueAsString(animalDTO);
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/animals")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body)).andExpect(status().isBadRequest())
+                .andReturn();
+
+        AnimalError animalError = objectMapper.readValue(result.getResponse().getContentAsString(), AnimalError.class);
+        verifyAnimalError(AnimalErrorMsgs.WRONG_MOTHER_SEX, AnimalErrorCode.CODE_05, animalError);
 
 
+    }
+
+    @SneakyThrows
+    @Test
+    public void wrongFatherSexTest(){
+
+    }
+
+    //'b55d9d91-2d6f-48f6-9442-8f654a0aba47','Beelzebub', 'M'
+    //'6c9e1336-13b8-4ecd-aa6f-f473c3c2e018','Satana', 'F',
 
 
 
