@@ -22,7 +22,9 @@ import java.util.UUID;
 public class Animal {
 
     @Id
-    private UUID id;
+    @Type(type="uuid-char")
+    //@Type(type="org.hibernate.type.UUIDCharType") Same thing as above
+    private UUID animalId;
 
     private String name;
     private char sex;
@@ -35,12 +37,12 @@ public class Animal {
 
     @PrePersist
     public void generateId(){
-        this.id = UUID.randomUUID();
+        this.animalId = UUID.randomUUID();
     }
 
     @Override
     public String toString() {
-        return "{\n id:"+id+"\n name:"+name+"\n sex:"+sex+"\n weight:"+weight+" \n age:"+age+"\n height:"+height+"\n arrivalDate:"+arrivalDate+"\n motherId:"+motherId+"\n father:"+fatherId+" \n}";
+        return "{\n id:"+animalId+"\n name:"+name+"\n sex:"+sex+"\n weight:"+weight+" \n age:"+age+"\n height:"+height+"\n arrivalDate:"+arrivalDate+"\n motherId:"+motherId+"\n father:"+fatherId+" \n}";
     }
 
 }

@@ -5,6 +5,7 @@ import co.edu.icesi.zoo.constant.AnimalErrorMsgs;
 import co.edu.icesi.zoo.constant.AnimalTestConstants;
 import co.edu.icesi.zoo.constant.BurmesePython;
 import co.edu.icesi.zoo.dto.AnimalDTO;
+import co.edu.icesi.zoo.dto.AnimalNoParentsDTO;
 import co.edu.icesi.zoo.error.exception.AnimalError;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
@@ -30,7 +31,6 @@ import java.io.Reader;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.UUID;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -60,10 +60,6 @@ public class CreateAnimalIntegrationTest {
 
     }
 
-
-    /*
-     * CONTROLLER RESPONSIBILITY
-     */
     @SneakyThrows
     @Test
     public void createAnimalTest(){
@@ -79,6 +75,7 @@ public class CreateAnimalIntegrationTest {
 
         AnimalDTO animalDTO = objectMapper.readValue(result.getResponse().getContentAsString(), AnimalDTO.class);
 
+        assertTrue(animalDTO instanceof AnimalDTO);
         assertThat(animalDTO, hasProperty(BurmesePython.NAME_ATTRIBUTE, is(AnimalTestConstants.ANIMAL_TEST_NAME)));
         assertThat(animalDTO, hasProperty(BurmesePython.SEX_ATTRIBUTE, is(AnimalTestConstants.ANIMAL_TEST_SEX)));
         assertThat(animalDTO, hasProperty(BurmesePython.WEIGHT_ATTRIBUTE, is(AnimalTestConstants.ANIMAL_TEST_WEIGHT)));
@@ -90,6 +87,9 @@ public class CreateAnimalIntegrationTest {
 
     }
 
+    /*
+     * CONTROLLER RESPONSIBILITY
+     */
     @SneakyThrows
     @Test
     public void createAnimalInvalidNameFormatTest(){
@@ -270,8 +270,11 @@ public class CreateAnimalIntegrationTest {
     @Test
     public void wrongMotherSexTest(){
 
+
         AnimalDTO animalDTO = baseAnimal();
-        animalDTO.setMotherId("6c9e1336-13b8-4ecd-aa6f-f473c3c2e018");
+        animalDTO.setMotherId(AnimalTestConstants.ANIMAL_TEST_FATHER_ID);
+        animalDTO.setFatherId(null);
+
 
         String body = objectMapper.writeValueAsString(animalDTO);
 
@@ -290,7 +293,25 @@ public class CreateAnimalIntegrationTest {
     @Test
     public void wrongFatherSexTest(){
 
+        AnimalDTO animalDTO = baseAnimal();
+        animalDTO.setFatherId(AnimalTestConstants.ANIMAL_TEST_MOTHER_ID);
+        animalDTO.setMotherId(null);
+
+
+        String body = objectMapper.writeValueAsString(animalDTO);
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/animals")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body)).andExpect(status().isBadRequest())
+                .andReturn();
+
+        AnimalError animalError = objectMapper.readValue(result.getResponse().getContentAsString(), AnimalError.class);
+        verifyAnimalError(AnimalErrorMsgs.WRONG_FATHER_SEX, AnimalErrorCode.CODE_05, animalError);
+
+
     }
+
+
 
     //'b55d9d91-2d6f-48f6-9442-8f654a0aba47','Beelzebub', 'M'
     //'6c9e1336-13b8-4ecd-aa6f-f473c3c2e018','Satana', 'F',

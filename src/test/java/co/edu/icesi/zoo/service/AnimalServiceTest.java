@@ -57,8 +57,8 @@ public class AnimalServiceTest {
 
         animalService.createAnimal(dummyAnimal);
         verify(animalRepository, times(1)).findAll();
-        verify(animalRepository, times(1)).findById(motherAnimal.getId());
-        verify(animalRepository, times(1)).findById(fatherAnimal.getId());
+        verify(animalRepository, times(1)).findById(motherAnimal.getAnimalId());
+        verify(animalRepository, times(1)).findById(fatherAnimal.getAnimalId());
         verify(animalRepository, times(1)).save(dummyAnimal);
 
     }
@@ -78,7 +78,7 @@ public class AnimalServiceTest {
     public void getNotExistingAnimal(){
 
         setupScenery1();
-        when(animalRepository.findById(dummyAnimal.getId())).thenReturn(Optional.empty());
+        when(animalRepository.findById(dummyAnimal.getAnimalId())).thenReturn(Optional.empty());
         AnimalWithParentsDTO nullAnimal = animalService.getAnimalWithParents(dummyAnimal.getName());
         assertNull(nullAnimal);
 
@@ -95,8 +95,8 @@ public class AnimalServiceTest {
         AnimalWithParentsDTO response = animalService.getAnimalWithParents(dummyAnimal.getName());
 
         assertEquals(animalWithParentsDTO, response);
-        verify(animalRepository, times(1)).findById(motherAnimal.getId());
-        verify(animalRepository, times(1)).findById(fatherAnimal.getId());
+        verify(animalRepository, times(1)).findById(motherAnimal.getAnimalId());
+        verify(animalRepository, times(1)).findById(fatherAnimal.getAnimalId());
         verify(animalRepository, times(1)).findAll();
 
 
@@ -107,9 +107,9 @@ public class AnimalServiceTest {
 
         setupScenery1();
         fatherAnimal.setSex(BurmesePython.FEMALE);
-        dummyAnimal.setFatherId(fatherAnimal.getId());
+        dummyAnimal.setFatherId(fatherAnimal.getAnimalId());
 
-        when(animalRepository.findById(fatherAnimal.getId())).thenReturn(Optional.of(fatherAnimal));
+        when(animalRepository.findById(fatherAnimal.getAnimalId())).thenReturn(Optional.of(fatherAnimal));
         verifyAnimalException(AnimalErrorMsgs.WRONG_FATHER_SEX, AnimalErrorCode.CODE_05);
 
     }
@@ -119,9 +119,9 @@ public class AnimalServiceTest {
 
         setupScenery1();
         motherAnimal.setSex(BurmesePython.MALE);
-        dummyAnimal.setMotherId(motherAnimal.getId());
+        dummyAnimal.setMotherId(motherAnimal.getAnimalId());
 
-        when(animalRepository.findById(motherAnimal.getId())).thenReturn(Optional.of(motherAnimal));
+        when(animalRepository.findById(motherAnimal.getAnimalId())).thenReturn(Optional.of(motherAnimal));
         verifyAnimalException(AnimalErrorMsgs.WRONG_MOTHER_SEX, AnimalErrorCode.CODE_05);
 
     }
@@ -150,10 +150,10 @@ public class AnimalServiceTest {
 
     public void configParents(){
 
-        dummyAnimal.setFatherId(fatherAnimal.getId());
-        dummyAnimal.setMotherId(motherAnimal.getId());
-        when(animalRepository.findById(fatherAnimal.getId())).thenReturn(Optional.of(fatherAnimal));
-        when(animalRepository.findById(motherAnimal.getId())).thenReturn(Optional.of(motherAnimal));
+        dummyAnimal.setFatherId(fatherAnimal.getAnimalId());
+        dummyAnimal.setMotherId(motherAnimal.getAnimalId());
+        when(animalRepository.findById(fatherAnimal.getAnimalId())).thenReturn(Optional.of(fatherAnimal));
+        when(animalRepository.findById(motherAnimal.getAnimalId())).thenReturn(Optional.of(motherAnimal));
 
     }
 

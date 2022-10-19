@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AnimalNoParentsDTO {
 
-    private String id;
+    private String animalId;
     private String name;
     private char sex;
     private double weight;

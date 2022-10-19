@@ -14,7 +14,7 @@ public interface AnimalMapper {
     AnimalDTO fromAnimal(Animal animal);
     AnimalNoParentsDTO fromAnimalToNoParents(Animal animal);
 
-    @Mapping(source = "animal.id", target = "id")
+    @Mapping(source = "animal.animalId", target = "animalId")
     @Mapping(source = "animal.name", target = "name")
     @Mapping(source = "animal.sex", target = "sex")
     @Mapping(source = "animal.weight", target = "weight")

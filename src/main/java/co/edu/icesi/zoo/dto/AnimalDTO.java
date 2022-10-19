@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -18,10 +19,10 @@ import javax.validation.constraints.Size;
 public class AnimalDTO {
 
 
-    private String id;
+    private String animalId;
 
     @NotBlank
-    @Size(min = 1, max = 3)
+    @Size(min = 1, max = 120)
     private String name;
     private char sex;
     private double weight;
