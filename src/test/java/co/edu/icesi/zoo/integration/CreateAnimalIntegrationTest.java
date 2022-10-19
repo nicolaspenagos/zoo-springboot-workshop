@@ -57,7 +57,6 @@ public class CreateAnimalIntegrationTest {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
         objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules();
-
     }
 
     @SneakyThrows
@@ -75,6 +74,7 @@ public class CreateAnimalIntegrationTest {
 
         AnimalDTO animalDTO = objectMapper.readValue(result.getResponse().getContentAsString(), AnimalDTO.class);
 
+        assertNotNull(animalDTO);
         assertTrue(animalDTO instanceof AnimalDTO);
         assertThat(animalDTO, hasProperty(BurmesePython.NAME_ATTRIBUTE, is(AnimalTestConstants.ANIMAL_TEST_NAME)));
         assertThat(animalDTO, hasProperty(BurmesePython.SEX_ATTRIBUTE, is(AnimalTestConstants.ANIMAL_TEST_SEX)));

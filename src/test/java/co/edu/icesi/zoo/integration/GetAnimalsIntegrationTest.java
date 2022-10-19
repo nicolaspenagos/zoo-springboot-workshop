@@ -20,12 +20,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -62,6 +60,7 @@ public class GetAnimalsIntegrationTest {
         AnimalNoParentsDTO beelzebub = animalNoParentsDTOList[0];
         AnimalNoParentsDTO satana = animalNoParentsDTOList[1];
 
+        assertNotNull(beelzebub);
         assertTrue(beelzebub instanceof AnimalNoParentsDTO);
         assertThat(beelzebub, hasProperty(BurmesePython.NAME_ATTRIBUTE, is("Beelzebub")));
         assertThat(beelzebub, hasProperty(BurmesePython.SEX_ATTRIBUTE, is('M')));
@@ -70,13 +69,14 @@ public class GetAnimalsIntegrationTest {
         assertThat(beelzebub, hasProperty(BurmesePython.AGE_ATTRIBUTE, is(30.0)));
         assertThat(beelzebub, hasProperty(BurmesePython.ARRIVAL_DATE_ATTRIBUTE, is("2004-12-31T00:00:00")));
 
+        assertNotNull(satana);
         assertTrue(satana instanceof AnimalNoParentsDTO);
         assertThat(satana, hasProperty(BurmesePython.NAME_ATTRIBUTE, is("Satana")));
         assertThat(satana, hasProperty(BurmesePython.SEX_ATTRIBUTE, is('F')));
         assertThat(satana, hasProperty(BurmesePython.WEIGHT_ATTRIBUTE, is(5.5)));
         assertThat(satana, hasProperty(BurmesePython.HEIGHT_ATTRIBUTE, is(5.0)));
         assertThat(satana, hasProperty(BurmesePython.AGE_ATTRIBUTE, is(15.0)));
-        assertThat(satana, hasProperty(BurmesePython.ARRIVAL_DATE_ATTRIBUTE, is("1998-11-20T00:00:00")));
+        assertThat(satana, hasProperty(BurmesePython.ARRIVAL_DATE_ATTRIBUTE, is("2001-11-24T00:00:00")));
 
     }
 }

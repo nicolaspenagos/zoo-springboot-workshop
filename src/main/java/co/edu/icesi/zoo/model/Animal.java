@@ -32,7 +32,9 @@ public class Animal {
     private double age;
     private double height;
     private LocalDateTime arrivalDate;
+    @Type(type="uuid-char")
     private UUID motherId;
+    @Type(type="uuid-char")
     private UUID fatherId;
 
     @PrePersist
