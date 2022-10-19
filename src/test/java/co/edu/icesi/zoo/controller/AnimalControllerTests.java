@@ -95,7 +95,7 @@ public class AnimalControllerTests {
         }
 
     }
-
+    // Check https://www.baeldung.com/parameterized-tests-junit-5 (JUnit 5 Parameterized Tests) to no
     @Test
     public void invalidNameCharactersTest() {
 

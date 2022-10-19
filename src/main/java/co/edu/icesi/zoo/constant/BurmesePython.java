@@ -13,5 +13,16 @@ public class BurmesePython {
     public final static int MAX_LENGTH_NAME = 120;
     public final static String REGEX_FOR_NAME = "[a-zA-Z ]+";
 
+    // Python attributes
+    public final static String SEX_ATTRIBUTE = "sex";
+    public final static String NAME_ATTRIBUTE = "name";
+    public final static String AGE_ATTRIBUTE = "age";
+    public final static String WEIGHT_ATTRIBUTE = "weight";
+    public final static String HEIGHT_ATTRIBUTE = "height";
+    public final static String ARRIVAL_DATE_ATTRIBUTE = "arrivalDate";
+    public final static String MOTHER_ID = "motherId";
+    public final static String FATHER_ID = "fatherId";
+
+
 
 }
