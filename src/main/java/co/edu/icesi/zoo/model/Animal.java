@@ -22,8 +22,7 @@ import java.util.UUID;
 public class Animal {
 
     @Id
-    @Type(type="uuid-char")
-    //@Type(type="org.hibernate.type.UUIDCharType") Same thing as above
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID animalId;
 
     private String name;
@@ -32,9 +31,9 @@ public class Animal {
     private double age;
     private double height;
     private LocalDateTime arrivalDate;
-    @Type(type="uuid-char")
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID motherId;
-    @Type(type="uuid-char")
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID fatherId;
 
     @PrePersist
