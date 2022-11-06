@@ -37,7 +37,7 @@ public class Animal {
     //@Type(type="uuid-char")
     //@Type(type="org.hibernate.type.UUIDCharType") Same thing as above
     private UUID motherId;
-    
+
     //@Type(type="uuid-char")
     //@Type(type="org.hibernate.type.UUIDCharType") Same thing as above
     private UUID fatherId;
