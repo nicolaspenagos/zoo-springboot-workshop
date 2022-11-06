@@ -1,8 +1,7 @@
-package co.edu.icesi.zoo.controller;
+package co.edu.icesi.zoo.controller.rest;
 
 import co.edu.icesi.zoo.api.AnimalZooAPI;
 import co.edu.icesi.zoo.constant.AnimalErrorCode;
-import co.edu.icesi.zoo.constant.AnimalErrorMsgs;
 import co.edu.icesi.zoo.constant.BurmesePython;
 import co.edu.icesi.zoo.constant.UtilConstants;
 import co.edu.icesi.zoo.dto.AnimalDTO;
@@ -13,6 +12,7 @@ import co.edu.icesi.zoo.service.AnimalService;
 import co.edu.icesi.zoo.utils.AnimalExceptionUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -22,7 +22,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
-public class AnimalController implements AnimalZooAPI {
+@CrossOrigin("*")
+public class AnimalRestController implements AnimalZooAPI {
 
     public final AnimalService animalService;
     public final AnimalMapper animalMapper;
@@ -58,7 +59,7 @@ public class AnimalController implements AnimalZooAPI {
     private void validateAnimalName(String name,int minLength,int maxLength, String regex){
 
         if(name.length()<minLength || name.length() > maxLength || !name.matches(regex))
-            AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, AnimalErrorCode.CODE_01, AnimalErrorMsgs.WRONG_NAME_FORMAT_MSG);
+            AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, AnimalErrorCode.CODE_01);
 
     }
 
@@ -68,9 +69,9 @@ public class AnimalController implements AnimalZooAPI {
             LocalDateTime arrivalDate = LocalDateTime.parse(date);
             LocalDateTime now = LocalDateTime.now();
             if(arrivalDate.isAfter(now))
-                AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, AnimalErrorCode.CODE_02, AnimalErrorMsgs.IMPOSSIBLE_DATE_MSG);
+                AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, AnimalErrorCode.CODE_02_01);
         }catch ( DateTimeParseException e){
-            AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, AnimalErrorCode.CODE_02, AnimalErrorMsgs.WRONG_DATE_FORMAT_MSG);
+            AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, AnimalErrorCode.CODE_02_02);
         }
 
     }
@@ -79,14 +80,14 @@ public class AnimalController implements AnimalZooAPI {
 
 
         if(characteristic<=min||characteristic>max)
-            AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST,AnimalErrorCode.CODE_03, AnimalErrorMsgs.WRONG_PYTHON_CHARACTERISTICS_MSG);
+            AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST,AnimalErrorCode.CODE_03);
 
     }
 
     private void validateParseableID(String parentId){
 
         if(parentId!=null&&!parentId.matches(UtilConstants.UUID_REGEX))
-            AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, AnimalErrorCode.CODE_06, AnimalErrorMsgs.INVALID_ID);
+            AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, AnimalErrorCode.CODE_06);
 
 
     }

@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 
 public class AnimalExceptionUtils {
 
-    public static void throwAnimalException(HttpStatus httpStatus, AnimalErrorCode code, String msg){
-        throw new AnimalException(httpStatus, new AnimalError(code, msg));
+    public static void throwAnimalException(HttpStatus httpStatus, AnimalErrorCode code){
+        throw new AnimalException(httpStatus, new AnimalError(code, code.getMessage()));
     }
 }

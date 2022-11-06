@@ -2,10 +2,8 @@
 package co.edu.icesi.zoo.service.impl;
 
 import co.edu.icesi.zoo.constant.AnimalErrorCode;
-import co.edu.icesi.zoo.constant.AnimalErrorMsgs;
 import co.edu.icesi.zoo.constant.BurmesePython;
 import co.edu.icesi.zoo.dto.AnimalWithParentsDTO;
-import co.edu.icesi.zoo.error.exception.AnimalException;
 import co.edu.icesi.zoo.mapper.AnimalMapper;
 import co.edu.icesi.zoo.model.Animal;
 import co.edu.icesi.zoo.repository.AnimalRepository;
@@ -80,7 +78,7 @@ public class AnimalServiceImpl implements AnimalService {
 
         for(Animal currentAnimal:getAnimals()){
             if(currentAnimal.getName().equals(name))
-                AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, AnimalErrorCode.CODE_04, AnimalErrorMsgs.NOT_UNIQUE_NAME_MSG);
+                AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, AnimalErrorCode.CODE_04);
         }
 
     }
@@ -90,8 +88,8 @@ public class AnimalServiceImpl implements AnimalService {
         if( parentId!=null){
             Optional<Animal> parent = Optional.ofNullable(getAnimal(parentId));
             if(parent.isPresent() && parent.get().getSex() != sex){
-                String msg = (sex==BurmesePython.FEMALE)?AnimalErrorMsgs.WRONG_MOTHER_SEX:AnimalErrorMsgs.WRONG_FATHER_SEX;
-                AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, AnimalErrorCode.CODE_05, msg);
+                AnimalErrorCode code = (sex==BurmesePython.FEMALE)?AnimalErrorCode.CODE_05_01:AnimalErrorCode.CODE_05_02;
+                AnimalExceptionUtils.throwAnimalException(HttpStatus.BAD_REQUEST, code);
             }
         }
 

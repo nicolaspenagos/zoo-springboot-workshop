@@ -1,7 +1,6 @@
 package co.edu.icesi.zoo.service;
 
 import co.edu.icesi.zoo.constant.AnimalErrorCode;
-import co.edu.icesi.zoo.constant.AnimalErrorMsgs;
 import co.edu.icesi.zoo.constant.AnimalTestConstants;
 import co.edu.icesi.zoo.constant.BurmesePython;
 import co.edu.icesi.zoo.dto.AnimalWithParentsDTO;
@@ -70,7 +69,7 @@ public class AnimalServiceTest {
         fatherAnimal.setName(dummyAnimal.getName());
 
         when(animalRepository.findAll()).thenReturn(List.of(fatherAnimal));
-        verifyAnimalException(AnimalErrorMsgs.NOT_UNIQUE_NAME_MSG, AnimalErrorCode.CODE_04);
+        verifyAnimalException( AnimalErrorCode.CODE_04);
 
     }
 
@@ -110,7 +109,7 @@ public class AnimalServiceTest {
         dummyAnimal.setFatherId(fatherAnimal.getAnimalId());
 
         when(animalRepository.findById(fatherAnimal.getAnimalId())).thenReturn(Optional.of(fatherAnimal));
-        verifyAnimalException(AnimalErrorMsgs.WRONG_FATHER_SEX, AnimalErrorCode.CODE_05);
+        verifyAnimalException( AnimalErrorCode.CODE_05_02);
 
     }
 
@@ -122,7 +121,7 @@ public class AnimalServiceTest {
         dummyAnimal.setMotherId(motherAnimal.getAnimalId());
 
         when(animalRepository.findById(motherAnimal.getAnimalId())).thenReturn(Optional.of(motherAnimal));
-        verifyAnimalException(AnimalErrorMsgs.WRONG_MOTHER_SEX, AnimalErrorCode.CODE_05);
+        verifyAnimalException( AnimalErrorCode.CODE_05_01);
 
     }
 
@@ -130,7 +129,7 @@ public class AnimalServiceTest {
     /*
      * UTILS
      */
-    public void verifyAnimalException(String correctMSG, AnimalErrorCode correctCode) {
+    public void verifyAnimalException(AnimalErrorCode correctCode) {
 
         // Check if the corresponding exception is thrown when we are trying to create an animal
         // containing an invalid attribute
@@ -141,7 +140,7 @@ public class AnimalServiceTest {
 
             assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
             assertNotNull(exception.getError());
-            assertEquals(correctMSG, exception.getError().getMessage());
+            assertEquals(correctCode.getMessage(), exception.getError().getMessage());
             assertEquals(correctCode, exception.getError().getCode());
 
         }

@@ -1,9 +1,9 @@
 package co.edu.icesi.zoo.controller;
 
 import co.edu.icesi.zoo.constant.AnimalErrorCode;
-import co.edu.icesi.zoo.constant.AnimalErrorMsgs;
 import co.edu.icesi.zoo.constant.AnimalTestConstants;
 import co.edu.icesi.zoo.constant.BurmesePython;
+import co.edu.icesi.zoo.controller.rest.AnimalRestController;
 import co.edu.icesi.zoo.dto.AnimalDTO;
 import co.edu.icesi.zoo.error.exception.AnimalException;
 import co.edu.icesi.zoo.mapper.AnimalMapper;
@@ -22,9 +22,9 @@ import java.time.ZoneId;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class AnimalControllerTests {
+public class AnimalRestControllerTests {
 
-    private AnimalController animalController;
+    private AnimalRestController animalRestController;
     private AnimalMapper animalMapper;
     private AnimalService animalService;
 
@@ -40,7 +40,7 @@ public class AnimalControllerTests {
 
         animalMapper = new AnimalMapperImpl();
         animalService = mock(AnimalService.class);
-        animalController = new AnimalController(animalService, animalMapper);
+        animalRestController = new AnimalRestController(animalService, animalMapper);
 
     }
 
@@ -54,7 +54,7 @@ public class AnimalControllerTests {
 
         try{
 
-            animalController.createAnimal(dummyAnimal);
+            animalRestController.createAnimal(dummyAnimal);
             verify(animalService, times(1)).createAnimal(any());
 
         }catch (AnimalException exception){
@@ -67,7 +67,7 @@ public class AnimalControllerTests {
     @Test
     public void getAnimalsTest(){
 
-        animalController.getAnimals();
+        animalRestController.getAnimals();
         verify(animalService, times(1)).getAnimals();
 
     }
@@ -75,7 +75,7 @@ public class AnimalControllerTests {
     @Test
     public void getAnimalWithParentsTest(){
 
-        animalController.getAnimalWithParents(any());
+        animalRestController.getAnimalWithParents(any());
         verify(animalService, times(1)).getAnimalWithParents(any());
 
     }
@@ -90,7 +90,7 @@ public class AnimalControllerTests {
             setupScenery1();
 
             dummyAnimal.setName(generateRandomOnlyLettersString(nameLength));
-            verifyAnimalException(AnimalErrorMsgs.WRONG_NAME_FORMAT_MSG, AnimalErrorCode.CODE_01);
+            verifyAnimalException( AnimalErrorCode.CODE_01);
 
         }
 
@@ -107,7 +107,7 @@ public class AnimalControllerTests {
             setupScenery1();
 
             dummyAnimal.setName(generateRandomOnlyLettersString(20) + invalidName);
-            verifyAnimalException(AnimalErrorMsgs.WRONG_NAME_FORMAT_MSG, AnimalErrorCode.CODE_01);
+            verifyAnimalException( AnimalErrorCode.CODE_01);
 
         }
 
@@ -129,7 +129,7 @@ public class AnimalControllerTests {
             LocalDateTime arrivalDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(futureArrivalTime), zoneId);
 
             dummyAnimal.setArrivalDate(arrivalDate.toString());
-            verifyAnimalException(AnimalErrorMsgs.IMPOSSIBLE_DATE_MSG, AnimalErrorCode.CODE_02);
+            verifyAnimalException( AnimalErrorCode.CODE_02_01);
 
         }
     }
@@ -167,10 +167,10 @@ public class AnimalControllerTests {
             // We only need to check the parents UUIDs as these are the only ones manually set by the user
             setupScenery1();
             dummyAnimal.setMotherId(invalidUUID);
-            verifyAnimalException(AnimalErrorMsgs.INVALID_ID, AnimalErrorCode.CODE_06);
+            verifyAnimalException( AnimalErrorCode.CODE_06);
             setupScenery1();
             dummyAnimal.setFatherId(invalidUUID);
-            verifyAnimalException(AnimalErrorMsgs.INVALID_ID, AnimalErrorCode.CODE_06);
+            verifyAnimalException( AnimalErrorCode.CODE_06);
             
 
         }
@@ -180,7 +180,7 @@ public class AnimalControllerTests {
     public void validateWrongDateFormat(){
         setupScenery1();
         dummyAnimal.setArrivalDate("inavlid_date");
-        verifyAnimalException(AnimalErrorMsgs.WRONG_DATE_FORMAT_MSG, AnimalErrorCode.CODE_02);
+        verifyAnimalException( AnimalErrorCode.CODE_02_02);
     }
 
     /*
@@ -197,25 +197,25 @@ public class AnimalControllerTests {
             if (characteristic == BurmesePython.HEIGHT) dummyAnimal.setHeight(invalidCharacteristic);
 
 
-            verifyAnimalException(AnimalErrorMsgs.WRONG_PYTHON_CHARACTERISTICS_MSG, AnimalErrorCode.CODE_03);
+            verifyAnimalException( AnimalErrorCode.CODE_03);
 
 
         }
 
     }
 
-    public void verifyAnimalException(String correctMSG, AnimalErrorCode correctCode) {
+    public void verifyAnimalException( AnimalErrorCode correctCode) {
 
         // Check if the corresponding exception is thrown when we are trying to create an animal
         // containing an invalid attribute
         try {
-            animalController.createAnimal(dummyAnimal);
+            animalRestController.createAnimal(dummyAnimal);
             fail();
         } catch (AnimalException exception) {
 
             assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
             assertNotNull(exception.getError());
-            assertEquals(correctMSG, exception.getError().getMessage());
+            assertEquals(correctCode.getMessage(), exception.getError().getMessage());
             assertEquals(correctCode, exception.getError().getCode());
 
         }

@@ -1,11 +1,9 @@
 package co.edu.icesi.zoo.integration;
 
 import co.edu.icesi.zoo.constant.AnimalErrorCode;
-import co.edu.icesi.zoo.constant.AnimalErrorMsgs;
 import co.edu.icesi.zoo.constant.AnimalTestConstants;
 import co.edu.icesi.zoo.constant.BurmesePython;
 import co.edu.icesi.zoo.dto.AnimalDTO;
-import co.edu.icesi.zoo.dto.AnimalNoParentsDTO;
 import co.edu.icesi.zoo.error.exception.AnimalError;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
@@ -105,7 +103,7 @@ public class CreateAnimalIntegrationTest {
                 .andReturn();
 
         AnimalError animalError = objectMapper.readValue(result.getResponse().getContentAsString(), AnimalError.class);
-        verifyAnimalError(AnimalErrorMsgs.WRONG_NAME_FORMAT_MSG, AnimalErrorCode.CODE_01, animalError);
+        verifyAnimalError( AnimalErrorCode.CODE_01, animalError);
 
     }
 
@@ -124,7 +122,7 @@ public class CreateAnimalIntegrationTest {
                 .andReturn();
 
         AnimalError animalError = objectMapper.readValue(result.getResponse().getContentAsString(), AnimalError.class);
-        verifyAnimalError(AnimalErrorMsgs.WRONG_NAME_FORMAT_MSG, AnimalErrorCode.CODE_01, animalError);
+        verifyAnimalError( AnimalErrorCode.CODE_01, animalError);
 
     }
 
@@ -146,7 +144,7 @@ public class CreateAnimalIntegrationTest {
                 .andReturn();
 
         AnimalError animalError = objectMapper.readValue(result.getResponse().getContentAsString(), AnimalError.class);
-        verifyAnimalError(AnimalErrorMsgs.IMPOSSIBLE_DATE_MSG, AnimalErrorCode.CODE_02, animalError);
+        verifyAnimalError( AnimalErrorCode.CODE_02_01, animalError);
 
     }
 
@@ -165,7 +163,7 @@ public class CreateAnimalIntegrationTest {
                 .andReturn();
 
         AnimalError animalError = objectMapper.readValue(result.getResponse().getContentAsString(), AnimalError.class);
-        verifyAnimalError(AnimalErrorMsgs.WRONG_DATE_FORMAT_MSG, AnimalErrorCode.CODE_02, animalError);
+        verifyAnimalError( AnimalErrorCode.CODE_02_02, animalError);
 
     }
 
@@ -184,7 +182,7 @@ public class CreateAnimalIntegrationTest {
                 .andReturn();
 
         AnimalError animalError = objectMapper.readValue(result.getResponse().getContentAsString(), AnimalError.class);
-        verifyAnimalError(AnimalErrorMsgs.WRONG_PYTHON_CHARACTERISTICS_MSG, AnimalErrorCode.CODE_03, animalError);
+        verifyAnimalError( AnimalErrorCode.CODE_03, animalError);
 
     }
 
@@ -203,7 +201,7 @@ public class CreateAnimalIntegrationTest {
                 .andReturn();
 
         AnimalError animalError = objectMapper.readValue(result.getResponse().getContentAsString(), AnimalError.class);
-        verifyAnimalError(AnimalErrorMsgs.WRONG_PYTHON_CHARACTERISTICS_MSG, AnimalErrorCode.CODE_03, animalError);
+        verifyAnimalError( AnimalErrorCode.CODE_03, animalError);
 
     }
 
@@ -222,7 +220,7 @@ public class CreateAnimalIntegrationTest {
                 .andReturn();
 
         AnimalError animalError = objectMapper.readValue(result.getResponse().getContentAsString(), AnimalError.class);
-        verifyAnimalError(AnimalErrorMsgs.WRONG_PYTHON_CHARACTERISTICS_MSG, AnimalErrorCode.CODE_03, animalError);
+        verifyAnimalError( AnimalErrorCode.CODE_03, animalError);
 
     }
 
@@ -241,7 +239,7 @@ public class CreateAnimalIntegrationTest {
                 .andReturn();
 
         AnimalError animalError = objectMapper.readValue(result.getResponse().getContentAsString(), AnimalError.class);
-        verifyAnimalError(AnimalErrorMsgs.INVALID_ID, AnimalErrorCode.CODE_06, animalError);
+        verifyAnimalError( AnimalErrorCode.CODE_06, animalError);
 
     }
 
@@ -262,7 +260,7 @@ public class CreateAnimalIntegrationTest {
                 .andReturn();
 
         AnimalError animalError = objectMapper.readValue(result.getResponse().getContentAsString(), AnimalError.class);
-        verifyAnimalError(AnimalErrorMsgs.NOT_UNIQUE_NAME_MSG, AnimalErrorCode.CODE_04, animalError);
+        verifyAnimalError( AnimalErrorCode.CODE_04, animalError);
 
     }
 
@@ -284,7 +282,7 @@ public class CreateAnimalIntegrationTest {
                 .andReturn();
 
         AnimalError animalError = objectMapper.readValue(result.getResponse().getContentAsString(), AnimalError.class);
-        verifyAnimalError(AnimalErrorMsgs.WRONG_MOTHER_SEX, AnimalErrorCode.CODE_05, animalError);
+        verifyAnimalError( AnimalErrorCode.CODE_05_01, animalError);
 
 
     }
@@ -306,7 +304,7 @@ public class CreateAnimalIntegrationTest {
                 .andReturn();
 
         AnimalError animalError = objectMapper.readValue(result.getResponse().getContentAsString(), AnimalError.class);
-        verifyAnimalError(AnimalErrorMsgs.WRONG_FATHER_SEX, AnimalErrorCode.CODE_05, animalError);
+        verifyAnimalError( AnimalErrorCode.CODE_05_02, animalError);
 
 
     }
@@ -334,10 +332,10 @@ public class CreateAnimalIntegrationTest {
         }
     }
 
-    public void verifyAnimalError(String correctMSG, AnimalErrorCode correctCode, AnimalError animalError) {
+    public void verifyAnimalError( AnimalErrorCode correctCode, AnimalError animalError) {
 
         assertNotNull(animalError);
-        assertEquals(correctMSG, animalError.getMessage());
+        assertEquals(correctCode.getMessage(), animalError.getMessage());
         assertEquals(correctCode, animalError.getCode());
 
     }
